@@ -1,0 +1,44 @@
+# baseURI: http://www.owl-ontologies.com/ex
+# imports: file:C:/Users/thomas/workspace/IA04/TD5/Td6/src/td6/foaf.n3
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ex: <http://www.owl-ontologies.com/ex#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix td5: <http://utc.fr#>
+
+td5:biology a foaf:thing;
+	foaf:name "Biology"^^xsd:string.
+
+td5:sports a foaf:thing;
+	foaf:name "Sports"^^xsd:string.
+	
+
+
+td5:p1 a foaf:Person;
+	foaf:name "Pierre"^^xsd:string;
+	foaf:knows td5:p5 , td5:p4;
+	foaf:topic_interest td5:biology.
+
+
+td5:p2 a foaf:Person;
+	foaf:name "Lucas"^^xsd:string;
+	foaf:topic_interest td5:sports, td5:biology.
+
+
+td5:p3 a foaf:Person;
+	foaf:name "Benoit"^^xsd:string;
+	foaf:knows td5:p1.
+	
+td5:p4 a foaf:Person;
+	foaf:name "Roger"^^xsd:string.
+
+td5:p5 a foaf:Person;
+	foaf:name "Gaston"^^xsd:string;
+	foaf:topic_interest td5:sports.
+
+
+
+
+
