@@ -1,0 +1,19 @@
+PREFIX foaf: <http://xmlns.com/foaf/0.1/> 
+PREFIX owl:     <http://www.w3.org/2002/07/owl#> 
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX geo: <http://linkedgeodata.org/triplify/>
+
+SELECT ?n2
+WHERE {
+	?p a foaf:Person.
+	?p foaf:name ?n.
+	?p foaf:topic_interest ?t.	
+		
+	?m foaf:topic_interest ?t.		
+	?m foaf:name ?n2.	
+		
+	FILTER ((?n = "Pierre") && (regex (str(?t),"node")) && (?n2 != "Pierre")).	
+
+}
+
