@@ -40,10 +40,7 @@ public class KBAgent extends Agent{
 		catch (FIPAException fe) {
 						fe.printStackTrace();
 		}
-					
-						
-					
-		addBehaviour(new KbWaitMessage());
-		
+										
+		addBehaviour(new KbWaitMessage());	
 	}
 }

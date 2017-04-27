@@ -25,7 +25,7 @@ public class MainContainer {
 			AgentController PropagateSparqlAgent = mc.createNewAgent("PropagateSparqlAgent", "td6.PropagateSparqlAgent",null);
 			PropagateSparqlAgent.start();
 			
-			AgentController KB = mc.createNewAgent("kb","td5.KBAgent", null);
+			AgentController KB = mc.createNewAgent("kb","td6.KBAgent", null);
 			KB.start();
 						
 			

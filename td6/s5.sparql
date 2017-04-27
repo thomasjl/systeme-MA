@@ -12,4 +12,3 @@ WHERE {
 	FILTER (regex (?n, "Pierre")).	
 
 }
-
