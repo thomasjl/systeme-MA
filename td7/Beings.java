@@ -4,7 +4,6 @@ import java.util.Random;
 
 import sim.engine.SimState;
 import sim.engine.Stoppable;
-import sim.field.grid.ObjectGrid2D;
 import sim.field.grid.SparseGrid2D;
 import sim.util.Int2D;
 
@@ -13,6 +12,7 @@ public class Beings extends SimState {
 	public static int GRID_SIZE;
 	public static int NUM_A ;
 	public static int NUM_B ;
+	public int currentNbFood;
 	private Constants constants;
 	
 	public SparseGrid2D yard ;
@@ -27,7 +27,7 @@ public class Beings extends SimState {
 		
 	}
 	
-	private Int2D getFreeLocation() {
+	public Int2D getFreeLocation() {
 		
 		Int2D location = new Int2D(random.nextInt(yard.getWidth()),	random.nextInt(yard.getHeight()) );
 		Object ag;
@@ -52,21 +52,23 @@ public class Beings extends SimState {
 			a.x = x;
 			a.y = y;
 			System.out.print("[fourmi "+i+"]["+x+", "+y +"]. Perception ("+a.getDISTANCE_PERCEPTION()+"). Déplacement ("+a.getDISTANCE_DEPLACEMENT()+"). Energie ("+a.getENERGIE()+"/"+constants.MAX_ENERGY+"). Reserve ("+a.getCHARGE_PORTEE()+"/"+a.getCHARGE_MAX()+").\n");
-			schedule.scheduleRepeating(a);
+			
 			Stoppable stoppable = schedule.scheduleRepeating(a);
 			a.stoppable = stoppable;
 		}
 	}
 	
 	private void addAgentsB() {
+		currentNbFood=NUM_B;
 		for(int i = 0; i < NUM_B; i++)
 		{
-			FoodCell a = new FoodCell();
+			FoodCell a = new FoodCell(i);
 			Int2D location = getFreeLocation();
 			yard.setObjectLocation(a,location.x,location.y);
 			a.x = location.x;
 			a.y = location.y;
-			schedule.scheduleRepeating(a);
+			Stoppable stoppable= schedule.scheduleRepeating(a);
+			a.stoppable = stoppable;
 		}
 	}
 	

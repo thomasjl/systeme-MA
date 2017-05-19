@@ -65,7 +65,7 @@ public class BeingsWithUI extends GUIState {
 	{
 		OvalPortrayal2D r = new OvalPortrayal2D();
 		r.paint = Color.GREEN;
-		r.filled = true;
+		r.filled = false;
 		return r;
 	}
 }

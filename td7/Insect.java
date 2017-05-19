@@ -236,8 +236,7 @@ protected List<Int2D> getEmplacementList(Beings beings,int l,int c) {
 			for(Object o : bag)
 			{				
 				if (o.getClass() != this.getClass() && ((FoodCell) o).getFOOD_AVAILABLE()>0)
-				{	
-					System.out.print("food en "+l+"-"+c+"\n");
+				{						
 					res.add(((FoodCell) o));//cast Object -> FoodCell
 				}
 			}	
@@ -270,9 +269,18 @@ protected List<Int2D> getEmplacementList(Beings beings,int l,int c) {
 				FoodCell chosenFood = getMaxFoodemplacement(listFoodCell);				
 				
 				//mange f
-				chosenFood.consumeFood();
-				ENERGIE = ENERGIE + constants.FOOD_ENERGY ;
-				System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi mange nourriture située en ["+chosenFood.x+", "+chosenFood.y+"]. Energie ("+ENERGIE+"/"+MAX_ENERGIE+"). Reserve ("+CHARGE_PORTEE+"/"+CHARGE_MAX+")\n");
+				chosenFood.consumeFood(state);
+				if(ENERGIE-MAX_ENERGIE>=constants.FOOD_ENERGY)
+				{
+					ENERGIE = ENERGIE + constants.FOOD_ENERGY ;
+					System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi mange nourriture située en ["+chosenFood.x+", "+chosenFood.y+"]. Energie ("+ENERGIE+"/"+MAX_ENERGIE+"). Reserve ("+CHARGE_PORTEE+"/"+CHARGE_MAX+")\n");
+				}
+				else
+				{
+					ENERGIE = MAX_ENERGIE;//energie ne doit pas depasser le max
+					System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi mange nourriture située en ["+chosenFood.x+", "+chosenFood.y+"]. Energie ("+ENERGIE+"/"+MAX_ENERGIE+"). Reserve ("+CHARGE_PORTEE+"/"+CHARGE_MAX+")\n");
+				
+				}
 							
 				
 			}
@@ -280,9 +288,19 @@ protected List<Int2D> getEmplacementList(Beings beings,int l,int c) {
 			else if (CHARGE_PORTEE > 0)
 			{
 				CHARGE_PORTEE --;	
-				ENERGIE=ENERGIE + constants.FOOD_ENERGY;
-				System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi mange nourriture qu'elle transporte. Energie ("+ENERGIE+"/"+MAX_ENERGIE+"). Reserve ("+CHARGE_PORTEE+"/"+CHARGE_MAX+")\n");
-			}
+				if(ENERGIE-MAX_ENERGIE>=constants.FOOD_ENERGY)
+				{
+					ENERGIE = ENERGIE + constants.FOOD_ENERGY ;
+					System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi mange nourriture qu'elle transporte. Energie ("+ENERGIE+"/"+MAX_ENERGIE+"). Reserve ("+CHARGE_PORTEE+"/"+CHARGE_MAX+")\n");
+					}
+				else
+				{
+					ENERGIE = MAX_ENERGIE;//energie ne doit pas depasser le max
+					System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi mange nourriture qu'elle transporte. Energie ("+ENERGIE+"/"+MAX_ENERGIE+"). Reserve ("+CHARGE_PORTEE+"/"+CHARGE_MAX+")\n");
+					
+				}
+				
+				}
 			//si transporte rien + pas de reserve, fourmi va mourir
 			else
 			{
@@ -307,9 +325,8 @@ protected List<Int2D> getEmplacementList(Beings beings,int l,int c) {
 					
 					//au moins un element "nourriture" qui contient de la nourriture
 					//fourmi stock la nourriture
-					chosenFood.consumeFood();
-					CHARGE_PORTEE++;
-					int tempEnergie=ENERGIE;
+					chosenFood.consumeFood(state);
+					CHARGE_PORTEE++;					
 					ENERGIE--;
 					System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi stock nourriture située sur sur sa propre case. Energie ("+ENERGIE+"/"+MAX_ENERGIE+"). Reserve ("+CHARGE_PORTEE+"/"+CHARGE_MAX+")\n");
 				}				
@@ -322,11 +339,12 @@ protected List<Int2D> getEmplacementList(Beings beings,int l,int c) {
 					{
 						//se deplace vers celle ou il y a le plus de nourriture
 						FoodCell chosenFood = getMaxFoodemplacement(listFarFoodCell);
-						beings.yard.setObjectLocation(this,chosenFood.x ,chosenFood.y);
-						int tempEnergie=ENERGIE;
+						beings.yard.setObjectLocation(this,chosenFood.x ,chosenFood.y);						
+						
 						ENERGIE--;
 						System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi se deplace vers nourriture située en ["+chosenFood.x+", "+chosenFood.y+"]. Energie ("+ENERGIE+"/"+MAX_ENERGIE+"). Reserve ("+CHARGE_PORTEE+"/"+CHARGE_MAX+")\n");
-												
+						x=chosenFood.x;
+						y=chosenFood.y;						
 					}
 					//sinon, se deplace au hasard (sur une case ou il n'y a pas deja une fourmi (amelioration : si nourriture critique, aller la ou il y a une fourmi => potentiel point de ressources))
 					else
@@ -338,7 +356,8 @@ protected List<Int2D> getEmplacementList(Beings beings,int l,int c) {
 						int tempEnergie=ENERGIE;
 						ENERGIE--;
 						System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi se deplace au hasard en ["+listOfEmplacement.get(n).x+", "+listOfEmplacement.get(n).y+"]. Energie ("+ENERGIE+"/"+MAX_ENERGIE+"). Reserve ("+CHARGE_PORTEE+"/"+CHARGE_MAX+")\n");
-											
+						x=listOfEmplacement.get(n).x;
+						y=listOfEmplacement.get(n).y;					
 					}
 					
 				}
@@ -347,10 +366,9 @@ protected List<Int2D> getEmplacementList(Beings beings,int l,int c) {
 					
 			}
 			else
-			{
-				int tempEnergie=ENERGIE;
+			{				
 				ENERGIE--;
-				System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi ne fait rien.  Energie passe de "+tempEnergie+" a "+ENERGIE+"sur "+MAX_ENERGIE+"\n");
+				System.out.print("[fourmi "+idFourmi+"]["+x+", "+y+"] fourmi ne fait rien.  Energie ("+ENERGIE+"/"+MAX_ENERGIE+"). Reserve ("+CHARGE_PORTEE+"/"+CHARGE_MAX+")\n");
 				
 			}
 			
